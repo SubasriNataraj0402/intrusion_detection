@@ -1,0 +1,14 @@
+# Optional extras for environments that support them (local dev, Docker,
+# Render) but NOT Vercel: shap pulls in heavy deps (numba/LLVM) that blow
+# past Vercel's 500MB function bundle limit, and scapy needs raw-socket/NIC
+# access Vercel's sandbox never has anyway. The app degrades gracefully
+# without either installed:
+#   - predictor.py falls back to RandomForest feature_importances_ instead
+#     of true per-prediction SHAP values
+#   - /api/upload-pcap and live capture return a clear error instead of
+#     crashing if scapy isn't present
+#
+# Install alongside the base requirements:
+#   pip install -r requirements.txt -r requirements-extra.txt
+scapy==2.6.1
+shap==0.46.0

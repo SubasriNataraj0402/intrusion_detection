@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: nids-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nids-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CAPTURE_ENABLED
+        value: "false"
+      - key: CORS_ORIGINS
+        value: '["https://your-frontend.vercel.app"]'
+    healthCheckPath: /api/health
+
+databases:
+  - name: nids-db
+    plan: free
+    databaseName: nids
+    user: nids
